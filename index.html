@@ -1,38 +1,456 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jorge Anderson — Software Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <title>iDev 2019</title>
-  </head>
-  <body>
-    <nav class="navbar navbar-dark bg-dark d-flex justify-content-center">
-      <a class="navbar-brand text-white">iDev 2019</a>
-    </nav>
-    <div class="d-flex justify-content-center mt-5">
-      <img src="icon.jpg" class="img-fluid" style="height: 200px; width: 200px">
+    :root {
+      --bg: #060810;
+      --surface: rgba(255, 255, 255, 0.04);
+      --border: rgba(255, 255, 255, 0.08);
+      --accent: #4f9eff;
+      --accent2: #a855f7;
+      --accent3: #22d3a5;
+      --text: #e8eaf0;
+      --text-muted: #6b7280;
+      --glow-blue: rgba(79, 158, 255, 0.15);
+      --glow-purple: rgba(168, 85, 247, 0.12);
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      background: radial-gradient(ellipse at 20% 20%, #0d1a2e 0%, #060810 45%, #0e0a1a 100%);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+
+    /* Ambient glow blobs */
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(100px);
+      pointer-events: none;
+      z-index: 0;
+      animation: drift 18s ease-in-out infinite alternate;
+    }
+    .blob-1 {
+      width: 500px; height: 500px;
+      background: var(--glow-blue);
+      top: -150px; left: -100px;
+      animation-duration: 22s;
+    }
+    .blob-2 {
+      width: 400px; height: 400px;
+      background: var(--glow-purple);
+      bottom: -100px; right: -80px;
+      animation-duration: 16s;
+      animation-delay: -8s;
+    }
+    .blob-3 {
+      width: 300px; height: 300px;
+      background: rgba(34, 211, 165, 0.07);
+      top: 40%; left: 60%;
+      animation-duration: 25s;
+      animation-delay: -4s;
+    }
+
+    @keyframes drift {
+      0%   { transform: translate(0, 0) scale(1); }
+      50%  { transform: translate(30px, 20px) scale(1.05); }
+      100% { transform: translate(-20px, -10px) scale(0.95); }
+    }
+
+    /* Main card */
+    .card {
+      position: relative;
+      z-index: 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 52px 48px 44px;
+      max-width: 440px;
+      width: calc(100% - 32px);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.04),
+        0 24px 80px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255,255,255,0.07);
+    }
+
+    /* Terminal prompt badge */
+    .terminal-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(79, 158, 255, 0.08);
+      border: 1px solid rgba(79, 158, 255, 0.2);
+      border-radius: 99px;
+      padding: 5px 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--accent);
+      margin-bottom: 28px;
+      letter-spacing: 0.03em;
+    }
+    .terminal-badge .dot {
+      width: 7px; height: 7px;
+      background: var(--accent3);
+      border-radius: 50%;
+      animation: blink 1.4s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.2; }
+    }
+
+    /* Avatar */
+    .avatar-wrapper {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 24px;
+    }
+    .avatar-wrapper::before {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3));
+      z-index: -1;
+      animation: spinGrad 6s linear infinite;
+    }
+    @keyframes spinGrad {
+      to { filter: hue-rotate(360deg); }
+    }
+    .avatar {
+      display: block;
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--bg);
+    }
+
+    /* Name & title */
+    h1 {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--accent);
+      margin-bottom: 20px;
+      letter-spacing: 0.04em;
+    }
+    .title .prompt { color: var(--accent3); }
+
+    /* Tagline */
+    .tagline {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 36px;
+      padding: 14px 18px;
+      background: rgba(255,255,255,0.03);
+      border-left: 2px solid var(--accent2);
+      border-radius: 0 8px 8px 0;
+      text-align: left;
+      width: 100%;
+    }
+    .tagline .comment { color: rgba(107, 114, 128, 0.7); }
+    .tagline .keyword { color: var(--accent2); }
+    .tagline .string  { color: var(--accent3); }
+
+    /* Stats row */
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      width: 100%;
+      margin-bottom: 28px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .stat {
+      flex: 1;
+      padding: 14px 8px;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .stat:last-child { border-right: none; }
+    .stat-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1;
+      margin-bottom: 5px;
+    }
+    .stat-value span { color: var(--accent); }
+    .stat-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* Tech badges */
+    .tech-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 28px;
+      width: 100%;
+    }
+    .tech-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      padding: 5px 11px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      background: rgba(255,255,255,0.03);
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+      cursor: default;
+    }
+    .tech-badge:hover {
+      color: var(--accent);
+      border-color: rgba(79, 158, 255, 0.35);
+      background: rgba(79, 158, 255, 0.07);
+    }
+    .tech-badge.highlight {
+      color: var(--accent3);
+      border-color: rgba(34, 211, 165, 0.3);
+      background: rgba(34, 211, 165, 0.06);
+    }
+
+    /* Divider */
+    .divider {
+      height: 1px;
+      width: 100%;
+      background: var(--border);
+      margin: 0 0 28px;
+    }
+
+    /* Social links */
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .social-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      text-decoration: none;
+      font-size: 20px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      position: relative;
+      border: 1px solid var(--border);
+    }
+
+    .social-btn:hover {
+      transform: translateY(-3px);
+    }
+
+    .social-btn .tooltip {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(10, 12, 20, 0.95);
+      color: #fff;
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 4px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s ease;
+      border: 1px solid var(--border);
+    }
+    .social-btn:hover .tooltip {
+      opacity: 1;
+    }
+
+    /* Individual button colors */
+    .btn-linkedin {
+      background: rgba(10, 102, 194, 0.12);
+      color: #0a66c2;
+      border-color: rgba(10, 102, 194, 0.25);
+    }
+    .btn-linkedin:hover {
+      background: rgba(10, 102, 194, 0.22);
+      box-shadow: 0 8px 24px rgba(10, 102, 194, 0.25);
+    }
+
+    .btn-instagram {
+      background: rgba(228, 64, 95, 0.1);
+      color: #e4405f;
+      border-color: rgba(228, 64, 95, 0.2);
+    }
+    .btn-instagram:hover {
+      background: rgba(228, 64, 95, 0.2);
+      box-shadow: 0 8px 24px rgba(228, 64, 95, 0.25);
+    }
+
+    .btn-apple {
+      background: rgba(255, 255, 255, 0.06);
+      color: #d1d5db;
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+    .btn-apple:hover {
+      background: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 8px 24px rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-email {
+      background: rgba(79, 158, 255, 0.1);
+      color: var(--accent);
+      border-color: rgba(79, 158, 255, 0.2);
+    }
+    .btn-email:hover {
+      background: rgba(79, 158, 255, 0.2);
+      box-shadow: 0 8px 24px rgba(79, 158, 255, 0.25);
+    }
+
+    .btn-github {
+      background: rgba(255, 255, 255, 0.05);
+      color: #e6edf3;
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+    .btn-github:hover {
+      background: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 8px 24px rgba(255, 255, 255, 0.08);
+    }
+
+    @media (max-width: 480px) {
+      .card {
+        padding: 40px 28px 36px;
+      }
+      h1 { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background effects -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <!-- Card -->
+  <div class="card">
+
+    <div class="terminal-badge">
+      <span class="dot"></span>
+      ~/jorge-anderson
     </div>
-    <div class="d-flex justify-content-center mt-5">
-        <h4>Contact</h4>
+
+    <div class="avatar-wrapper">
+      <img src="profile.jpg" alt="Jorge Anderson" class="avatar">
     </div>
-    <div class="d-flex justify-content-center mt-3">
-      <h5>E-mail</h5>
+
+    <h1>Jorge Anderson</h1>
+    <p class="title"><span class="prompt">$</span> Software Engineer</p>
+
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value" style="font-size:12px; padding-top:2px;">Senior</div>
+        <div class="stat-label">@ PGM Fortaleza</div>
+      </div>
     </div>
-    <div class="d-flex justify-content-center">
-      <a href = "mailto: jorgeandersonm@gmail.com" target="_blank">jorgeandersonm@gmail.com</a>
+
+    <!-- Tech badges -->
+    <div class="tech-grid">
+      <span class="tech-badge highlight">Ruby on Rails</span>
+      <span class="tech-badge highlight">React</span>
+      <span class="tech-badge highlight">React Native</span>
+      <span class="tech-badge">iOS · Swift</span>
+      <span class="tech-badge">TypeScript</span>
+      <span class="tech-badge">Node.js</span>
+      <span class="tech-badge">PostgreSQL</span>
+      <span class="tech-badge">Docker</span>
+      <span class="tech-badge">CI/CD</span>
+      <span class="tech-badge">Redis</span>
+      <span class="tech-badge">Cypress</span>
+      <span class="tech-badge">Tailwind</span>
     </div>
-    <div class="d-flex justify-content-center mt-3">
-      <h5>Twitter</h5>
+
+    <div class="divider"></div>
+
+    <div class="social-links">
+
+      <a href="https://www.linkedin.com/in/jorgeandersonm" target="_blank" rel="noopener" class="social-btn btn-linkedin">
+        <i class="fa-brands fa-linkedin-in"></i>
+        <span class="tooltip">LinkedIn</span>
+      </a>
+
+      <a href="https://instagram.com/jorgeandersonm" target="_blank" rel="noopener" class="social-btn btn-instagram">
+        <i class="fa-brands fa-instagram"></i>
+        <span class="tooltip">@jorgeandersonm</span>
+      </a>
+
+      <a href="https://apps.apple.com/br/developer/jorge-anderson/id1472441101" target="_blank" rel="noopener" class="social-btn btn-apple">
+        <i class="fa-brands fa-apple"></i>
+        <span class="tooltip">App Store</span>
+      </a>
+
+      <a href="https://github.com/jorgeandersonm" target="_blank" rel="noopener" class="social-btn btn-github">
+        <i class="fa-brands fa-github"></i>
+        <span class="tooltip">GitHub</span>
+      </a>
+
+      <a href="mailto:jorgeandersonm@gmail.com" class="social-btn btn-email">
+        <i class="fa-solid fa-envelope"></i>
+        <span class="tooltip">E-mail</span>
+      </a>
+
     </div>
-    <div class="d-flex justify-content-center">
-        <a href = "https://twitter.com/jorgeandersonm" target="_blank">jorgeandersonm</a>
-    </div>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  </body>
+
+  </div>
+
+
+
+</body>
 </html>
